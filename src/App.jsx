@@ -1,19 +1,18 @@
-import React, { Fragment, useContext, useEffect, useRef } from 'react'
+import React, {Fragment, useContext, useEffect, useRef} from 'react'
 import Routers from './routes/Routers'
-import { AuthContext } from './contexts/AuthContext'
-import handleLocalStorage from './utils/handleLocalStorage'
-import { SocketContext } from './contexts/SocketContext'
-import { useLocation } from 'react-router-dom';
+import {AuthContext} from './contexts/AuthContext'
+import handleLocalStorage from './utils/HandleLocalStorage'
+import {SocketContext} from './contexts/SocketContext'
+import {useLocation} from 'react-router-dom'
 function App() {
-
-  const { dispatch, user, notifications } = useContext(AuthContext)
-  const { socket } = useContext(SocketContext)
+  const {dispatch, user, notifications} = useContext(AuthContext)
+  const {socket} = useContext(SocketContext)
   const userRef = useRef(user)
   const notificationsRef = useRef(notifications)
   const location = useLocation()
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.search, location.pathname]);
+    window.scrollTo(0, 0)
+  }, [location.search, location.pathname])
 
   useEffect(() => {
     if (user) {
@@ -30,7 +29,7 @@ function App() {
 
   const handleSetNoti = (data) => {
     if (data.receiver?.id === userRef.current.id) {
-      dispatch({ type: 'SET_NOTIFICATION', payload: [data?.notification, ...notificationsRef.current] })
+      dispatch({type: 'SET_NOTIFICATION', payload: [data?.notification, ...notificationsRef.current]})
       dispatch({
         type: 'UPDATE_PROPERTY_USER',
         payload: {
@@ -63,7 +62,7 @@ function App() {
   const handleSetNotiAcceptedFriendRequest = (data) => {
     console.log(data)
     if (data.receiverAccepted.id === userRef.current.id) {
-      dispatch({ type: 'SET_NOTIFICATION', payload: [data?.notification, ...notificationsRef.current] })
+      dispatch({type: 'SET_NOTIFICATION', payload: [data?.notification, ...notificationsRef.current]})
       dispatch({
         type: 'UPDATE_PROPERTY_USER',
         payload: {
@@ -98,7 +97,6 @@ function App() {
     socket.on('sendNotiFriendAccepted', (data) => {
       handleSetNotiAcceptedFriendRequest(data)
     })
-
   }, [])
 
   return (

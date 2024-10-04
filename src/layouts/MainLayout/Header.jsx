@@ -1,33 +1,33 @@
-import React, { useContext, useState, useRef, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { AiOutlineSearch } from 'react-icons/ai'
-import { RiLockPasswordLine } from 'react-icons/ri'
-import { GoSignOut } from 'react-icons/go'
+import React, {useContext, useState, useRef, useEffect} from 'react'
+import {Link, useNavigate} from 'react-router-dom'
+import {AiOutlineSearch} from 'react-icons/ai'
+import {RiLockPasswordLine} from 'react-icons/ri'
+import {GoSignOut} from 'react-icons/go'
 import Search from '../../components/Search/Search'
-import { BsBell, BsThreeDots, BsChatSquareQuote } from 'react-icons/bs'
-import { HiOutlinePencilAlt } from 'react-icons/hi'
-import { FiMessageSquare } from 'react-icons/fi'
+import {BsBell, BsThreeDots, BsChatSquareQuote} from 'react-icons/bs'
+import {HiOutlinePencilAlt} from 'react-icons/hi'
+import {FiMessageSquare} from 'react-icons/fi'
 import Tippy from '@tippyjs/react/headless'
-import { format } from 'timeago.js'
+import {format} from 'timeago.js'
 import vi from '../../utils/formatDate'
 import Image from '../../components/Image/Image'
-import { AuthContext } from '../../contexts/AuthContext'
-import handleLocalStorage from '../../utils/handleLocalStorage'
+import {AuthContext} from '../../contexts/AuthContext'
+import handleLocalStorage from '../../utils/HandleLocalStorage'
 import HandleAuthToken from '../../utils/HandleAuthToken'
 import OutsideClickWrapper from '../../components/OutsideClickWrapper'
 import IconMessage from './components/IconMessage'
-import { FaUserAlt } from 'react-icons/fa'
+import {FaUserAlt} from 'react-icons/fa'
 import routes from '../../config/routes'
-import { SocketContext } from '../../contexts/SocketContext'
+import {SocketContext} from '../../contexts/SocketContext'
 import chatApi from '../../api/chatApi'
 import Avatar from '../../components/Avatar/Avatar'
 import SearchMobile from '../../components/Search/SearchMobile'
 import notiApi from '../../api/notiApi'
 import userApi from '../../api/userApi'
-import { twMerge } from 'tailwind-merge'
+import {twMerge} from 'tailwind-merge'
 const Header = () => {
-  const { user, dispatch, notifications, listChatUnread } = useContext(AuthContext)
-  const { socket } = useContext(SocketContext)
+  const {user, dispatch, notifications, listChatUnread} = useContext(AuthContext)
+  const {socket} = useContext(SocketContext)
   const navigate = useNavigate()
   const [showListMessage, setShowListMessage] = useState(false)
   const [showInfoUser, setShowInfoUser] = useState(false)
@@ -37,7 +37,7 @@ const Header = () => {
   const handleSignOut = () => {
     handleLocalStorage.delete('accessToken')
     HandleAuthToken()
-    dispatch({ type: 'LOGOUT' })
+    dispatch({type: 'LOGOUT'})
     navigate('/dang-nhap')
   }
 
@@ -45,7 +45,7 @@ const Header = () => {
     setShowNotifications(!showNotifications)
     if (user.notificationUnread > 0) {
       await notiApi.readNotification()
-      dispatch({ type: 'SET_NOTIFICATION_UNREAD', payload: 0 })
+      dispatch({type: 'SET_NOTIFICATION_UNREAD', payload: 0})
     }
   }
 
@@ -53,7 +53,7 @@ const Header = () => {
     if (!chatId) return
     const chat = listChatUnread.find((item) => item === chatId)
     if (chat) return
-    dispatch({ type: 'SET_LIST_CHAT_UNREAD', payload: [...listChatUnread, chatId] })
+    dispatch({type: 'SET_LIST_CHAT_UNREAD', payload: [...listChatUnread, chatId]})
   }
 
   useEffect(() => {
@@ -84,11 +84,11 @@ const Header = () => {
       })
       const newNotifications = notifications.map((item) => {
         if (item._id === notificationId) {
-          return { ...item, status: 'read' }
+          return {...item, status: 'read'}
         }
         return item
       })
-      dispatch({ type: 'SET_NOTIFICATION', payload: newNotifications })
+      dispatch({type: 'SET_NOTIFICATION', payload: newNotifications})
     } catch (error) {
       console.log(error)
     }

@@ -1,28 +1,28 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Carousel } from '@trendyol-js/react-carousel'
-import { format } from 'timeago.js'
+import React, {useContext, useEffect, useState} from 'react'
+import {Carousel} from '@trendyol-js/react-carousel'
+import {format} from 'timeago.js'
 import Tippy from '@tippyjs/react/headless'
-import { Link, useNavigate } from 'react-router-dom'
-import { BsBell } from 'react-icons/bs'
-import { FiMessageSquare } from 'react-icons/fi'
-import { AiFillLike, AiFillSetting, AiOutlineClose, AiOutlineLike } from 'react-icons/ai'
-import { GoSignOut } from 'react-icons/go'
-import { AuthContext } from '../../contexts/AuthContext'
+import {Link, useNavigate} from 'react-router-dom'
+import {BsBell} from 'react-icons/bs'
+import {FiMessageSquare} from 'react-icons/fi'
+import {AiFillLike, AiFillSetting, AiOutlineClose, AiOutlineLike} from 'react-icons/ai'
+import {GoSignOut} from 'react-icons/go'
+import {AuthContext} from '../../contexts/AuthContext'
 import Image from '../../components/Image/Image'
 import Video from '../../components/Video/Video'
 import Avatar from '../../components/Avatar/Avatar'
 import LeftArrow from '../../assets/icons/LeftArrow'
 import RightArrow from '../../assets/icons/RightArrow'
-import handleLocalStorage from '../../utils/handleLocalStorage'
+import handleLocalStorage from '../../utils/HandleLocalStorage'
 import FormCreateComment from '../../components/FormCreateComment/FormCreateComment'
 import CommentContainer from '../../components/CommentContainer'
-import { FaRegComment } from 'react-icons/fa'
-import { SocketContext } from '../../contexts/SocketContext'
-import { TbShare3 } from 'react-icons/tb'
+import {FaRegComment} from 'react-icons/fa'
+import {SocketContext} from '../../contexts/SocketContext'
+import {TbShare3} from 'react-icons/tb'
 
 const ShowPost = () => {
-  const { post, user, dispatch } = useContext(AuthContext)
-  const { socket } = useContext(SocketContext)
+  const {post, user, dispatch} = useContext(AuthContext)
+  const {socket} = useContext(SocketContext)
   const [comments, setComments] = useState(() => {
     const comments = post?.comments.filter((c) => !c.commentParent)
     return comments?.reverse()
@@ -33,7 +33,7 @@ const ShowPost = () => {
   const handleSignOut = () => {
     handleLocalStorage.delete('accessToken')
     HandleAuthToken()
-    dispatch({ type: 'LOGOUT' })
+    dispatch({type: 'LOGOUT'})
     navigate('/dang-nhap')
   }
 
@@ -72,7 +72,7 @@ const ShowPost = () => {
     )
   }
   const handleClosePost = () => {
-    dispatch({ type: 'CLOSE_POST' })
+    dispatch({type: 'CLOSE_POST'})
     navigate(-1)
   }
   useEffect(() => {
@@ -84,7 +84,7 @@ const ShowPost = () => {
     if (data?.post?._id === post?._id) {
       setLikes(data?.post?.likes)
       if (data.notification && post.user._id === user._id) {
-        dispatch({ type: 'SET_NOTIFICATION', payload: [data.notification, ...notifications] })
+        dispatch({type: 'SET_NOTIFICATION', payload: [data.notification, ...notifications]})
         dispatch({
           type: 'UPDATE_PROPERTY_USER',
           payload: {
@@ -96,7 +96,7 @@ const ShowPost = () => {
     }
   }
   const handleLikePost = () => {
-    socket.emit('likePost', { post: post, user: user, likes: likes })
+    socket.emit('likePost', {post: post, user: user, likes: likes})
   }
   const isLikePost = likes?.find((id) => id === user?._id)
 

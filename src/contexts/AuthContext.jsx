@@ -1,7 +1,6 @@
-import { createContext, useReducer, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import {createContext, useReducer, useEffect} from 'react'
+import {useNavigate} from 'react-router-dom'
 import AuthReducer from './AuthReducer'
-import handleLocalStorage from '../utils/handleLocalStorage'
 import checkAuth from '../utils/checkAuth'
 import config from '../config'
 import authApi from '../api/authApi'
@@ -14,27 +13,27 @@ const INITIAL_STATE = {
   notifications: [],
   listChatUnread: [],
   currentChatMessage: {},
-  postUpdate: null
+  postUpdate: null,
 }
 
 export const AuthContext = createContext(INITIAL_STATE)
 
-export const AuthContextProvider = ({ children }) => {
+export const AuthContextProvider = ({children}) => {
   const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE)
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchUser = async () => {
-      dispatch({ type: 'LOGIN_START' })
+      dispatch({type: 'LOGIN_START'})
       try {
         const res = await authApi.getCurrentUser()
         localStorage.setItem('currentUserId', JSON.stringify(res?.data?.user?.id))
-        dispatch({ type: 'LOGIN_SUCCESS', payload: res?.data?.user })
+        dispatch({type: 'LOGIN_SUCCESS', payload: res?.data?.user})
         const resNotification = await notiApi.getAllNotification()
-        dispatch({ type: 'SET_NOTIFICATION', payload: resNotification.data.notifications })
+        dispatch({type: 'SET_NOTIFICATION', payload: resNotification.data.notifications})
       } catch (error) {
         console.log(error)
-        dispatch({ type: 'LOGIN_FAILURE' })
+        dispatch({type: 'LOGIN_FAILURE'})
         navigate(config.routes.login)
       }
     }
