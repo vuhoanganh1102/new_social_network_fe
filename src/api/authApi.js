@@ -5,7 +5,7 @@ const authApi = {
     return axiosClient.post('/auth/login', data)
   },
   register: (data) => {
-    return axiosClient.post('/auth/register', data)
+    return axiosClient.post('/client-auth/request-register', data)
   },
   getCurrentUser: () => {
     return axiosClient.get('/auth/me')
